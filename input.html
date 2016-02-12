@@ -1,5 +1,12 @@
 <template name="input">
     <form class="t-input">
-        <input class="t-input-input" name="t-input-input" placeholder="ur message">
+        <input class="t-input-input" name="t-input-input" placeholder="Type ele!" autocomplete="off">
+
+        {{#if currentValue}}
+            <div class="t-input-hint">
+                <h3 class="t-input-hintHeader">Send sessage</h3>
+                {{ currentValue }}
+            </div>
+        {{/if}}
     </form>
 </template>
