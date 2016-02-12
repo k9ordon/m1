@@ -1,0 +1,13 @@
+.t-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &-content {
+        flex: auto;
+    }
+
+    &-input {
+        border-top:1px solid gray;
+    }
+}
