@@ -1,6 +1,6 @@
 <template name="message">
-    <div class="t-message">
-        <div class="t-message-user">{{ name }}</div>
-        <div class="t-message-content">{{ content }}</div>
+    <div class="t-message {{#if owned}}t-message--owned{{/if}}">
+        <div class="t-message-user">{{ username }}</div>
+        <div class="t-message-content {{#if owned}}t-message-content--owned{{/if}}">{{ text }}</div>
     </div>
 </template>

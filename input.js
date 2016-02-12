@@ -3,6 +3,14 @@ if (Meteor.isClient) {
         'submit .t-input': function(e) {
             e.preventDefault();
             console.log('submit', Session.get('input-value'));
+
+            Messages.insert({
+                text: Session.get('input-value'),
+                createdAt: new Date(),
+                username: Session.get('username')
+            });
+
+            $('.t-input-input').val('');
         },
         'keyup .t-input-input': function(e) {
             console.log('i changed', e.target.value);

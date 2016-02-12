@@ -1,5 +1,15 @@
+Messages = new Mongo.Collection("messages");
+
 if (Meteor.isClient) {
+    Template.registerHelper('session',function(input){
+        return Session.get(input);
+    });
+
     Meteor.startup(function() {
+        var usernameSeeds = ['yadda', 'yolo', 'raised fist'];
+        var randomUsername = usernameSeeds[Math.floor(Math.random()*usernameSeeds.length)];
+        Session.set('username', randomUsername);
+
         WebFontConfig = {
             google: {
                 families: ['Hind+Siliguri:400,500,300,700,600:latin']
