@@ -1,0 +1,23 @@
+<template name="hints">
+
+    <div class="t-hints">
+        <!-- {{#each hints}}
+            <div class="t-hints-hint">
+                <h3 class="t-hints-hintHeader">{{title}}</h3>
+                {{ state.mode }}
+            </div>
+        {{/each}} -->
+
+        <div class="t-hints-hint">
+            <h3 class="t-hints-hintHeader">Send sessage as {{ session "username" }}</h3>
+        </div>
+
+        <div class="t-hints-hint">
+            <h3 class="t-hints-hintHeader">DEBUG</h3>
+            {{ state.mode }}
+        </div>
+
+    </div>
+
+
+</template>

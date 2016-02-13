@@ -2,15 +2,24 @@ if (Meteor.isClient) {
     Template.input.events({
         'submit .t-input': function(e) {
             e.preventDefault();
-            console.log('submit', Session.get('input-value'));
+            console.log('submit', Session.get('input-value'), Session.get('input-mode'));
 
-            Messages.insert({
-                text: Session.get('input-value'),
-                createdAt: new Date(),
-                username: Session.get('username')
-            });
+            var inputMode = Session.get('input-mode'),
+                inputValue = Session.get('input-value');
 
-            $('.t-input-input').val('');
+            if (inputMode === "message") {
+                Messages.insert({
+                    text: Session.get('input-value'),
+                    createdAt: new Date(),
+                    username: Session.get('username')
+                });
+
+                $('.t-input-input').val('');
+            } else if (inputMode === "directmessage") {
+                alert('set to direct message mode');
+            } else if (inputMode === "channel") {
+                alert('set to channel mode');
+            }
         },
         'keyup .t-input-input': function(e) {
             console.log('i changed', e.target.value);
@@ -29,17 +38,17 @@ if (Meteor.isClient) {
         //         document.querySelector('.t-input').style.position = 'absolute';
         //     },0);
         //     setTimeout(function() {
-        //         //document.querySelector('.t-input').style.position = 'fixed';
-        //     },200);
-        //
-        //     setTimeout(function() {
-        //         $('html,body').animate({
-        //             scrollTop: $(".t-message:last").offset().top
-        //         }, 'slow', function() {
-        //                 document.querySelector('.t-input').style.position = 'fixed';
-        //             }
-        //         );
+        //         document.querySelector('.t-input').style.position = 'fixed';
         //     },100);
+        //
+        //     // setTimeout(function() {
+        //     //     $('html,body').animate({
+        //     //         scrollTop: $(".t-message:last").offset().top
+        //     //     }, 'slow', function() {
+        //     //             document.querySelector('.t-input').style.position = 'fixed';
+        //     //         }
+        //     //     );
+        //     // },100);
         //
         //
         //
@@ -51,12 +60,30 @@ if (Meteor.isClient) {
 
     Template.input.processMessage = function(message) {
         console.log('processMessage', message, this);
+
+        var inputState = {};
+
+        inputState.channels = (message.match(/(^#|\s#)([a-z0-9]+)/gi) || []).map(function(channel) {
+            return channel.trim();
+        });
+        inputState.usernames = (message.match(/(^@|\s@)([a-z0-9]+)/gi) || []).map(function(tag) {
+            return tag.trim();
+        });
+
+        if (message.startsWith('@')) {
+            inputState.mode = 'directmessage';
+        } else if (message.startsWith('#')) {
+            inputState.mode = 'channelmessage';
+        } else {
+            inputState.mode = 'status';
+        }
+
+        Session.set('input-state', inputState);
     };
 
     Template.input.helpers({
-        currentValue: function() {
-            console.log('currentValue', Session.get('input-value'));
-            return Session.get('input-value');
+        state: function() {
+            return Session.get('input-state');
         }
     });
 }
